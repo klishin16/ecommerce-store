@@ -1902,7 +1902,7 @@
     resolve.exports "1.1.0"
     tslib "^2.3.0"
 
-"@nx/js@16.10.0", "@nx/js@^16.10.0":
+"@nx/js@16.10.0":
   version "16.10.0"
   resolved "https://registry.yarnpkg.com/@nx/js/-/js-16.10.0.tgz#cf74fc8b8b1d958d4706f0ebba56ec6642e2bfc9"
   integrity sha512-27AH0/+XTMzOxVS6oV8Zl7/Rr1UDMYsnCVqoCU9CXp087uxcD4VnBOEjsEUlJKh1RdwGE3K0hBkk7NC1LP+vYQ==
@@ -1967,7 +1967,7 @@
     semver "7.5.3"
     tslib "^2.3.0"
 
-"@nx/next@16.10.0", "@nx/next@^16.10.0":
+"@nx/next@16.10.0":
   version "16.10.0"
   resolved "https://registry.yarnpkg.com/@nx/next/-/next-16.10.0.tgz#4f5eaa4a5d5fc96466b6cb9ab3d8436266e3668f"
   integrity sha512-SXyNJjZvpklhJmp99erlvISn26ZgMP7r3JbKqilxcFVxT3YJrlS/89L4/WRmh9GK0yjzt1kWvKWFqfxY4augxA==
