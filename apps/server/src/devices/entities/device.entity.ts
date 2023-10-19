@@ -52,6 +52,6 @@ export class Device implements IDevice {
     @JoinColumn({ name: "categoryId" })
     category: Category;
 
-    @OneToMany(() => Purchase, purchase => purchase.device)
+    @OneToMany(() => Purchase, purchase => purchase.device, { onDelete: 'CASCADE' })
     purchases: Purchase[];
 }

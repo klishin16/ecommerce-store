@@ -27,7 +27,7 @@ export class DevicesService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} device`;
+    return this.deviceRepository.delete({ id })
   }
 
   findWithFilters(withFiltersDto: WithFiltersDto) {

@@ -2,7 +2,7 @@
 import { errorHandler, generateTableConfig } from "@/functions";
 import Link from "next/link";
 import { useAppDispatch, useRequest } from "@/hooks";
-import { Button, Card, Row, Table } from "antd";
+import { Button, Card, Col, Row, Table } from "antd";
 import { RedoOutlined } from "@ant-design/icons";
 import { AppColors } from "@/constants";
 import { usePathname } from "next/navigation";
@@ -29,6 +29,8 @@ const DevicesAdminPage: React.FC<IDevicesAdminPageProps> = ({token}) => {
     const dispatch = useAppDispatch();
     const current_path = usePathname();
 
+    const {drawerProps, openDrawer} = useDrawer<IDeviceUpdateDto>();
+
     const [devices, loading, refreshDevices] = useRequest(() =>
         DevicesService.fetchAll()
             .catch((e) => {
@@ -42,7 +44,21 @@ const DevicesAdminPage: React.FC<IDevicesAdminPageProps> = ({token}) => {
             })
     )
 
-    const {drawerProps, openDrawer} = useDrawer<IDeviceUpdateDto>();
+    const removeDeviceHandler = (device: IDevice) => {
+        DevicesService.remove(token, device.id)
+            .then(() => {
+                refreshDevices()
+            })
+            .catch((e) => {
+                dispatch(
+                    addNotification({
+                        title: 'Device removing error',
+                        message: errorHandler(e),
+                        type: 'error'
+                    })
+                );
+            })
+    }
 
     const columns = generateTableConfig([
         {
@@ -56,9 +72,18 @@ const DevicesAdminPage: React.FC<IDevicesAdminPageProps> = ({token}) => {
             title: 'operation',
             render: (_: never, device: IDevice) => {
                 return (
-                    <Button onClick={ () => openDrawer(device) }>
-                        Edit
-                    </Button>
+                    <Row gutter={ 16 }>
+                        <Col>
+                            <Button onClick={ () => openDrawer(device) }>
+                                Edit
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button danger onClick={ () => removeDeviceHandler(device) }>
+                                Delete
+                            </Button>
+                        </Col>
+                    </Row>
                 )
             },
         },

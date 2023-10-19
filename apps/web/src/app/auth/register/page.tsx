@@ -9,6 +9,8 @@ import Link from "next/link";
 import { addNotification } from "@/redux/features/notifications.slice";
 import { errorHandler } from "@/functions/error-handler";
 import { IRegisterPayload } from "@ecommerce-store/common";
+import { ERoutes } from "@/constants";
+import { useRouter } from "next/navigation";
 
 const RegisterPageWrapper = styled.div`
   width: 100%;
@@ -28,6 +30,7 @@ const RegistrationCard = styled((props: CardProps) => <Card {...props}/>)`
 const RegisterPage = () => {
     const { isLoading } = useTypedSelector(state => state.auth);
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const submitForm = (data: IRegisterPayload) => {
         const payload: IRegisterPayload = {
@@ -42,6 +45,7 @@ const RegisterPage = () => {
                     message: 'Successfully registered',
                     type: 'success',
                 }));
+                router.push(ERoutes.DEVICES)
             })
             .catch((e) => {
                 dispatch(addNotification({

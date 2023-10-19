@@ -20,6 +20,6 @@ export class Purchase implements IPurchase {
     @ManyToOne(() => Basket, (basket) => basket.purchases)
     public basket: Basket
 
-    @ManyToOne(() => Device, (device) => device.purchases)
+    @ManyToOne(() => Device, (device) => device.purchases, { onDelete: "CASCADE" })
     public device: Device
 }

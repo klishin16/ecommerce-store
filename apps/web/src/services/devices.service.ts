@@ -45,10 +45,20 @@ const update = async (token: string, payload: IDeviceUpdateDto): Promise<IDevice
     }).then(response => response.data)
 }
 
+const remove = async (token: string, id: number)=> {
+    return axios.delete(BACKEND_URL + 'devices/' + id, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    })
+}
+
 export const DevicesService = {
     fetchAll,
     fetchWithFilters,
     fetchOne,
     create,
-    update
+    update,
+    remove
 }
