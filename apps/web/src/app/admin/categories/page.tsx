@@ -42,7 +42,6 @@ const createCategoriesTree = (dataset: ICategory[]): DataNode[] => {
     return dataTree;
 };
 
-
 const AdminCategories = ({ token }: { token: string }) => {
     const dispatch = useAppDispatch();
     const { drawerProps, openDrawer } = useDrawer<IUpdateCategoryDto>({
