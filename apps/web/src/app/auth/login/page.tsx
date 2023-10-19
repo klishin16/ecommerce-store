@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { login } from "@/redux/features/auth.slice";
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from "next/link";
-import { ERoutes } from "@/constants";
+import { APP_TITLE, ERoutes } from "@/constants";
 import { addNotification } from "@/redux/features/notifications.slice";
 import { errorHandler } from "@/functions/error-handler";
 import { ILoginPayload } from "@ecommerce-store/common";
@@ -68,7 +68,7 @@ const LoginPage = () => {
 
     return (
         <LoginPageContainer>
-            <LoginCard title="React store"
+            <LoginCard title={ APP_TITLE }
                        headStyle={ {display: "flex", justifyContent: "center", fontSize: "1.6rem"} }
                        bordered={ true }
             >
@@ -80,7 +80,15 @@ const LoginPage = () => {
                     {/* Email input */ }
                     <Form.Item
                         name="email"
-                        rules={ [{required: true, message: 'Please enter your email'}] }
+                        rules={ [
+                            {
+                                type: 'email',
+                                message: 'The input is not valid email!',
+                            },
+                            {
+                                required: true,
+                                message: 'Please enter your email'
+                            }] }
                     >
                         <Input
                             prefix={ <MailOutlined/> }

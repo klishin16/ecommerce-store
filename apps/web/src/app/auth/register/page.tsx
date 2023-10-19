@@ -9,7 +9,7 @@ import Link from "next/link";
 import { addNotification } from "@/redux/features/notifications.slice";
 import { errorHandler } from "@/functions/error-handler";
 import { IRegisterPayload } from "@ecommerce-store/common";
-import { ERoutes } from "@/constants";
+import { APP_TITLE, ERoutes } from "@/constants";
 import { useRouter } from "next/navigation";
 
 const RegisterPageWrapper = styled.div`
@@ -59,7 +59,7 @@ const RegisterPage = () => {
 
     return (
         <RegisterPageWrapper>
-            <RegistrationCard title="React store"
+            <RegistrationCard title={ APP_TITLE }
                               headStyle={ { display: "flex", justifyContent: "center", fontSize: "1.6rem" } }
                               bordered={ true }
             >

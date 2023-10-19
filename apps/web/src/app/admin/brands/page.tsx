@@ -85,7 +85,7 @@ const AdminBrands: React.FC<{ token: string }> = ({ token }) => {
                             loading={ loading }
                             onClick={ () => refreshBrands() }
                         >Refresh</Button>
-                        <Button onClick={ () => openDrawer } style={ {
+                        <Button onClick={ () => openDrawer() } style={ {
                             color: AppColors.GREEN,
                             borderColor: AppColors.GREEN,
                             marginLeft: '.5vw'

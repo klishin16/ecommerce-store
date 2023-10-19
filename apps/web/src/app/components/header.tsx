@@ -7,7 +7,7 @@ import Title from "antd/es/typography/Title";
 import { useAppDispatch, useAuthSession, useTypedSelector } from "@/hooks";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ERoutes } from "@/constants";
+import { APP_TITLE, ERoutes } from "@/constants";
 import { authActions } from "@/redux/features/auth.slice";
 import { useBasket } from "@/hooks/useBasket";
 import { EUserRoles } from "@ecommerce-store/common";
@@ -93,7 +93,7 @@ const AppHeader = () => {
             <HeaderLogoContainer>
                 <Link href={ ERoutes.DEVICES }>
                     <Title level={ 3 } style={ {margin: 0 }}>
-                        REACT SHOP
+                        { APP_TITLE }
                     </Title>
                 </Link>
             </HeaderLogoContainer>
