@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ERoutes, TOKEN_KEY } from "@/constants";
 import { AuthService } from "@/services";
@@ -6,6 +6,8 @@ import { authActions } from "@/redux/features/auth.slice";
 import { useAppDispatch, useTypedSelector } from "@/hooks";
 import { Spin } from "antd";
 import styled from "styled-components";
+import { EUserRoles, IUser } from "@ecommerce-store/common";
+import { notificationsActions } from "@/redux/features/notifications.slice";
 
 const AuthLoaderContainer = styled.div`
     display: flex;
@@ -13,47 +15,72 @@ const AuthLoaderContainer = styled.div`
     align-items: center;
 `
 
-const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P & { token: string }>) => {
+const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P & { token: string }>, allow_roles?: EUserRoles[]) => {
     const AuthenticatedComponent = (props: P) => {
         const dispatch = useAppDispatch();
         const router = useRouter();
         const pathname = usePathname();
-        const [token, setToken] = React.useState<string | null>(null);
-        const stateToken = useTypedSelector(state => state.auth.token);
+        const token = useTypedSelector(state => state.auth.token);
+        const user  = useTypedSelector(state => state.auth.user);
+
+        const [roleAccess, setRoleAccess] = useState<boolean>(false);
+
+
+        const redirectToLogin = () => {
+            return router.push(ERoutes.LOGIN + `?continue=${pathname}`);
+        }
+
+        const checkUserRoleAccess = (user: IUser) => {
+            if (!allow_roles || (allow_roles.includes(user.role))) {
+                setRoleAccess(true);
+            } else {
+                console.log('No role access')
+                dispatch(notificationsActions.addNotification({
+                    title: 'Access error',
+                    message: 'You have no access to this page',
+                    type: 'error'
+                }))
+                redirectToLogin();
+            }
+        }
 
         useEffect(() => {
-            const getToken = async () => {
-                if (stateToken) {
-                    return stateToken;
-                }
+            console.log('token', token)
+            if (token) {
+                // Токен есть в стейте
+                if (user) {
+                    checkUserRoleAccess(user);
+                } else {
+                    AuthService.profile(token)
+                        .then((profile) => {
+                            dispatch(authActions.setUser(profile));
 
+                        })
+                        .catch(() => {
+                            redirectToLogin();
+                        })
+                }
+            } else {
                 console.log('No token in store, trying get from localStorage');
 
-                if (typeof window !== 'undefined') {
-                    const localStorageToken = localStorage.getItem(TOKEN_KEY);
-                    if (localStorageToken) {
-                        return AuthService.profile(localStorageToken)
-                            .then((profile) => {
-                                dispatch(authActions.setToken(localStorageToken))
-                                dispatch(authActions.setUser(profile))
-                                return localStorageToken;
-                            })
-                            .catch(() => {
-                                router.push(ERoutes.LOGIN + `?continue=${pathname}`);
-                                return null;
-                            })
-                    }
-
+                const localStorageToken = localStorage.getItem(TOKEN_KEY);
+                if (localStorageToken) {
+                    AuthService.profile(localStorageToken)
+                        .then((profile) => {
+                            dispatch(authActions.setToken(localStorageToken))
+                            dispatch(authActions.setUser(profile))
+                            checkUserRoleAccess(profile);
+                        })
+                        .catch(() => {
+                            redirectToLogin();
+                        })
+                } else {
+                    redirectToLogin()
                 }
-
-                router.push(ERoutes.LOGIN);
-                return null;
             }
-
-            getToken().then(token => setToken(token))
         }, [dispatch]);
 
-        if (!token) {
+        if (!token || !roleAccess) {
             return (
                 <AuthLoaderContainer className='auth-loader-container'>
                     <Spin/>

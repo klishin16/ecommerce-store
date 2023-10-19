@@ -44,6 +44,24 @@ const AppHeader = () => {
         dispatch(authActions.logout())
     }
 
+    const loginButtonClickHandler = () => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','loginButton')
+        router.push(ERoutes.LOGIN)
+    }
+
+    const registrationButtonClickHandler = () => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','registrationButton')
+        router.push(ERoutes.REGISTRATION)
+    }
+
+    const basketButtonClickHandler = () => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','basketButton')
+        router.push(ERoutes.BASKET)
+    }
+
     const authLinks = user ?
         <>
             <Button
@@ -55,7 +73,7 @@ const AppHeader = () => {
             </Button>
 
             <Badge count={ purchases?.length ?? 0 }>
-                <Button type={ "link" } onClick={ () => router.push(ERoutes.BASKET) } key="6">Basket</Button>
+                <Button type={ "link" } onClick={ basketButtonClickHandler } key="6">Basket</Button>
             </Badge>
             { user.role === EUserRoles.ADMIN &&
                 <Button type={ "link" } onClick={ () => router.push(ERoutes.ADMIN) } key="6">Admin</Button> }
@@ -64,9 +82,9 @@ const AppHeader = () => {
         </>
         :
         <>
-            <Button type={ "link" } icon={ <LoginOutlined/> } onClick={ () => router.push(ERoutes.LOGIN) }
+            <Button type={ "link" } icon={ <LoginOutlined/> } onClick={ loginButtonClickHandler }
                     key="5">Login</Button>
-            <Button type={ "link" } onClick={ () => router.push(ERoutes.REGISTRATION) }
+            <Button type={ "link" } onClick={ registrationButtonClickHandler }
                     key="6">Registration</Button>
         </>
 

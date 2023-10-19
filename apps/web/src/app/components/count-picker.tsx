@@ -28,10 +28,14 @@ const CountPicker: React.FC<ICountPickerProps> = ({ onChange }) => {
 
     const increase = () => {
         setCount(count + 1)
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','countPicker')
         onChange(count);
     }
 
     const decrease = () => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','countPicker')
         setCount(count - 1 || 1)
         onChange(count)
     }

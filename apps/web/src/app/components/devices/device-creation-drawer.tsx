@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Drawer, Form, Image, Input, InputNumber, Row, Select, Space, Upload } from 'antd';
-import { useAppDispatch, useRequest, useTypedSelector } from "@/hooks";
+import { useAppDispatch, useRequest } from "@/hooks";
 import { devicesActions } from "@/redux/features/devices.slice";
 import { BACKEND_URL, IMAGE_STORAGE_URL } from "@/constants";
 import { UploadOutlined } from "@ant-design/icons";

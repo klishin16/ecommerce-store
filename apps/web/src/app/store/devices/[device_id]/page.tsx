@@ -43,10 +43,14 @@ const DeviceDetailPage = ({ params }: { params: { device_id: number } }) => {
     )
 
     const buyHandler = (device: IDevice) => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','detailBuyButton')
         dispatch(basketActions.addDevice({ device, amount: 1 }))
     }
 
     const buyNowHandler = (device: IDevice) => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','detailBuyNowButton')
         dispatch(basketActions.addDevice({ device, amount: 1 })).then((v) => {
             router.push(ERoutes.BASKET)
         })

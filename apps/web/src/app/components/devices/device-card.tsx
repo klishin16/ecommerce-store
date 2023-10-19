@@ -41,16 +41,22 @@ const DeviceCard: React.FC<IDeviceCardProps> = ({ device }) => {
     }
 
     const buyHandler = (device: IDevice) => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','buyButton')
         dispatch(basketActions.addDevice({ device, amount }))
     }
 
     const buyNowHandler = (device: IDevice) => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','buyNowButton')
         dispatch(basketActions.addDevice({ device, amount })).then((v) => {
             router.push(ERoutes.BASKET)
         })
     }
 
     const deviceClickHandler = (device: IDevice) => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','deviceClick')
         if (isPermissionActive('device-detail')) {
             router.push(pathname + '/' + device.id)
         }

@@ -22,7 +22,7 @@ export class BrandsService {
   }
 
   update(id: number, updateBrandDto: UpdateBrandDto) {
-    return `This action updates a #${id} brand`;
+    return this.brandRepository.update({ id }, updateBrandDto);
   }
 
   remove(id: number) {

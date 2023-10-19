@@ -15,7 +15,7 @@ import styled from "styled-components";
 import AppBreadcrumbs from "@/app/components/breadcrumbs";
 import withAuth from "@/app/components/HOC/withAuth";
 import { useDrawer } from "@/hooks/useDrawer";
-import { IUpdateBrandDto } from "@ecommerce-store/common";
+import { EUserRoles, IBrand, IUpdateBrandDto } from "@ecommerce-store/common";
 
 
 const BrandsContainer = styled.div`
@@ -59,7 +59,17 @@ const AdminBrands: React.FC<{ token: string }> = ({ token }) => {
         },
         {
             title: 'description'
-        }
+        },
+        {
+            title: 'operation',
+            render: (_: never, brand: IBrand) => {
+                return (
+                    <Button onClick={ () => openDrawer(brand) }>
+                        Edit
+                    </Button>
+                )
+            },
+        },
     ])
 
     return (
@@ -83,12 +93,12 @@ const AdminBrands: React.FC<{ token: string }> = ({ token }) => {
                     </Row>
                 </Card>
 
-                <BrandCreationDrawer token={token} { ...drawerProps } />
-
                 <Table rowKey={ 'id' } loading={ loading } columns={ columns } dataSource={ brands ?? [] }/>
+
+                <BrandCreationDrawer token={token} { ...drawerProps } />
             </BrandsContainer>
         </>
     );
 };
 
-export default withAuth(AdminBrands);
+export default withAuth(AdminBrands, [EUserRoles.EDITOR, EUserRoles.ADMIN]);

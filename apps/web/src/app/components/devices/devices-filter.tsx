@@ -43,6 +43,8 @@ const DevicesFilter = () => {
     const minPrice = Form.useWatch('minPrice', form);
     const maxPrice = Form.useWatch('maxPrice', form);
     const applyFilters = (values: IDevicesFiltersForm) => {
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','filterButton')
         dispatch(devicesActions.fetchDevicesWithFilter(values))
     }
 
