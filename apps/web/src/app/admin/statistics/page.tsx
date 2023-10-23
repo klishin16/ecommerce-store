@@ -1,23 +1,23 @@
 'use client'
 import React from 'react';
-import {Button, Card, Col, Layout, Row, Space, Statistic} from "antd";
-// import AdminViewHeader, {IBreadcrumbRoute} from "./AdminViewHeader";
-import {Content} from "antd/es/layout/layout";
-import {LikeOutlined} from '@ant-design/icons'
-
+import { Card, Col, Layout, Row, Space, Statistic } from "antd";
+import { Content } from "antd/es/layout/layout";
+import { useRequest } from "@/hooks";
+import { StatisticsService } from "@/services/statistics.service";
+import { IStatistics } from "@ecommerce-store/common";
 
 const StatisticView: React.FC = () => {
-    // const currentBreadcrumbPath: IBreadcrumbRoute = {
-    //     path: 'Statistic',
-    //     breadcrumbName: 'Statistic'
-    // }
+    const [statistics, loading] = useRequest<IStatistics>(() =>
+        StatisticsService.fetch()
+    )
+
+    if (loading || !statistics) {
+        return <></>
+    }
 
 
     return (
         <Layout>
-            {/*<AdminViewHeader title={"Statistic"} subTitle={"Shop statistic"}*/}
-            {/*                 breadcrumbPath={[...breadcrumbPath, currentBreadcrumbPath]}/>*/}
-
             <Content>
                 <Row gutter={16} justify={"center"} align={"middle"} style={{marginTop: '1.6vh'}}>
                     <Space />
@@ -26,13 +26,10 @@ const StatisticView: React.FC = () => {
                         <Card style={{height: '180px'}}>
                             <Row>
                                 <Col span={12}>
-                                    <Statistic title="Active Users" value={112893}/>
+                                    <Statistic title="Active Users" value={statistics.users}/>
                                 </Col>
                                 <Col span={12}>
-                                    <Statistic title="Account Balance (CNY)" value={112893} precision={2}/>
-                                    <Button style={{marginTop: 16}} type="primary">
-                                        Recharge
-                                    </Button>
+                                    <Statistic title="Devices" value={statistics.devices}/>
                                 </Col>
                             </Row>
                         </Card>
@@ -44,10 +41,10 @@ const StatisticView: React.FC = () => {
                         <Card style={{height: '180px'}}>
                             <Row>
                                 <Col span={12}>
-                                    <Statistic title="Feedback" value={1128} prefix={<LikeOutlined/>}/>
+                                    <Statistic title="Brands" value={statistics.brands}/>
                                 </Col>
                                 <Col span={12}>
-                                    <Statistic title="Unmerged" value={93} suffix="/ 100"/>
+                                    <Statistic title="Categories" value={statistics.categories}/>
                                 </Col>
                             </Row>,
                         </Card>

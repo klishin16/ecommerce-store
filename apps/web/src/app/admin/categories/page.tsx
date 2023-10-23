@@ -33,10 +33,13 @@ const createCategoriesTree = (dataset: ICategory[]): DataNode[] => {
 
     const dataTree: DataNode[] = [];
     dataset.forEach(category => {
-        if(category.parentId) {
-            treeNodesMap.get(category.parentId)?.children.push(treeNodesMap.get(category.id)!)
-        } else {
-            dataTree.push(treeNodesMap.get(category.id)!);
+        const currentTreeNode = treeNodesMap.get(category.id);
+        if (currentTreeNode) {
+            if(category.parentId) {
+                treeNodesMap.get(category.parentId)?.children.push(currentTreeNode)
+            } else {
+                dataTree.push(currentTreeNode);
+            }
         }
     });
     return dataTree;

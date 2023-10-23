@@ -21,7 +21,8 @@ import { Purchase } from './baskets/entities/purchase.entity';
 import { StorageModule } from './storage/storage.module';
 import { SettingsModule } from './settings/settings.module';
 import Joi from 'joi';
-import { Settings } from "./settings/entities/settings.entity";
+import { Settings } from './settings/entities/settings.entity';
+import { StatisticsModule } from './statistics/statistics.module';
 
 const entity_modules = [
     BasketsModule,
@@ -59,7 +60,15 @@ const entity_modules = [
                 username: configService.get('DB_USER'),
                 password: configService.get('DB_PASSWORD'),
                 database: configService.get('DB_NAME'),
-                entities: [Basket, Brand, Category, Device, User, Purchase, Settings],
+                entities: [
+                    Basket,
+                    Brand,
+                    Category,
+                    Device,
+                    User,
+                    Purchase,
+                    Settings,
+                ],
                 synchronize: true,
                 ssl: configService.get('NODE_ENV') === 'production',
             }),
@@ -69,6 +78,7 @@ const entity_modules = [
             dest: './uploads',
         }),
         StorageModule,
+        StatisticsModule,
     ],
     controllers: [AppController],
     providers: [AppService],
