@@ -12,7 +12,6 @@ export enum ERoutes {
     REGISTRATION = '/auth/register',
     ADMIN = '/admin',
     INDEX = '/',
-    DEVICES = '/store/devices',
     BASKET = '/store/basket',
     PROFILE = '/profile'
 }

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Badge, Button } from "antd";
 import styled from "styled-components";
-import { LoginOutlined } from '@ant-design/icons';
+import { UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import Title from "antd/es/typography/Title";
 import { useAppDispatch, useAuthSession, useTypedSelector } from "@/hooks";
 import { useRouter } from "next/navigation";
@@ -82,16 +82,20 @@ const AppHeader = () => {
         </>
         :
         <>
-            <Button type={ "link" } icon={ <LoginOutlined/> } onClick={ loginButtonClickHandler }
+            <Button type={ "link" }
+                    icon={ <UserOutlined /> }
+                    onClick={ loginButtonClickHandler }
                     key="5">Login</Button>
-            <Button type={ "link" } onClick={ registrationButtonClickHandler }
+            <Button type={ "link" }
+                    icon={ <UserAddOutlined /> }
+                    onClick={ registrationButtonClickHandler }
                     key="6">Registration</Button>
         </>
 
     return (
         <HeaderContainer>
             <HeaderLogoContainer>
-                <Link href={ ERoutes.DEVICES }>
+                <Link href={ ERoutes.INDEX }>
                     <Title level={ 3 } style={ {margin: 0 }}>
                         { APP_TITLE }
                     </Title>

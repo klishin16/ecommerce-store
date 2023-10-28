@@ -1,11 +1,12 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Menu, theme } from 'antd';
 import styled from "styled-components";
 import { useTypedSelector } from "@/hooks";
 import Link from "next/link";
 import { sidebarItems } from "@/constants";
 import { Content } from "antd/es/layout/layout";
+import { usePathname, useRouter } from "next/navigation"
 
 const { Header, Footer, Sider } = Layout;
 
@@ -18,24 +19,29 @@ const Logo = styled.div`
 
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+    const pathname = usePathname();
     const {
         token: { colorBgContainer },
     } = theme.useToken();
 
     const { user } = useTypedSelector(state => state.auth)
 
-    const [collapseSide, setCollapseSide] = useState(false)
+    const [collapseSide, setCollapseSide] = useState(false);
 
     const onCollapse = (collapsed: boolean) => {
         setCollapseSide(collapsed)
     };
+
+    const [selectedItem, setSelectedItem] = useState<number>(0);
+    useEffect(() => {
+        setSelectedItem(sidebarItems.findIndex((sidebarItem) => sidebarItem.view === pathname ?? 0))
+    }, [pathname])
 
     const menuItems = () => sidebarItems.map((menuItem, index) => (
         <Menu.Item key={ index } icon={ menuItem.icon }>
             <Link href={ menuItem.view }>{ menuItem.title }</Link>
         </Menu.Item>
     ))
-
 
     return (
         <Layout style={ { minHeight: '100vh' } }>
@@ -44,7 +50,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
                 <Menu
                     theme="dark"
-                    defaultSelectedKeys={ ['0'] }
+                    defaultSelectedKeys={ [selectedItem.toString()] }
                     mode="inline"
                 >
                     { menuItems() }

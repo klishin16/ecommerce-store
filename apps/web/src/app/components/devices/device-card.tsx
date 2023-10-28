@@ -58,7 +58,7 @@ const DeviceCard: React.FC<IDeviceCardProps> = ({ device }) => {
         // @ts-ignore
         window.ym(95089246,'reachGoal','deviceClick')
         if (isPermissionActive('device-detail')) {
-            router.push(pathname + '/' + device.id)
+            router.push(ERoutes.INDEX + device.id)
         }
     }
 

@@ -45,7 +45,7 @@ const RegisterPage = () => {
                     message: 'Successfully registered',
                     type: 'success',
                 }));
-                router.push(ERoutes.DEVICES)
+                router.push(ERoutes.INDEX)
             })
             .catch((e) => {
                 dispatch(addNotification({

@@ -53,7 +53,7 @@ const LoginPage = () => {
                     message: 'Logged in successfully',
                     type: 'success',
                 }));
-                router.push(searchParams.get('continue') ?? ERoutes.DEVICES)
+                router.push(searchParams.get('continue') ?? ERoutes.INDEX)
             })
             .catch((e: unknown) => {
                 dispatch(
