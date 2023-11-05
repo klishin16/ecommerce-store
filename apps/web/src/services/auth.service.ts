@@ -1,34 +1,40 @@
 import axios from "axios";
 import { BACKEND_URL } from "@/constants";
 import {
-    ILoginPayload,
-    ILoginResponseData,
-    IRegisterPayload,
-    IRegisterResponseData,
-    IUser
+  ILoginPayload,
+  ILoginResponseData,
+  IRegisterPayload,
+  IRegisterResponseData,
+  IUser
 } from "@ecommerce-store/common";
 
+
+const axiosInstance = axios.create({
+  baseURL: BACKEND_URL
+});
+axiosInstance.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8';
+axiosInstance.interceptors.response.use(
+  (response) => response.data
+)
+
 const register = async (payload: IRegisterPayload): Promise<IRegisterResponseData> => {
-    return axios.post<IRegisterResponseData>(BACKEND_URL + "auth/register", payload)
-        .then((response) => response.data);
+  return axiosInstance.post<IRegisterResponseData>('auth/register', payload)
 };
 
 const login = async (payload: ILoginPayload): Promise<ILoginResponseData> => {
-    return axios.post<ILoginResponseData>(BACKEND_URL + "auth/login", payload)
-        .then(response => response.data);
+  return axiosInstance.post<ILoginResponseData>('auth/login', payload)
 };
 
 const profile = async (token: string): Promise<IUser> => {
-    return axios.get<IUser>(BACKEND_URL + 'auth/profile', {
-        headers: {
-            'Authorization': `Bearer ${ token }`,
-            'Content-Type': 'application/json;charset=utf-8'
-        }
-    }).then(response => response.data)
+  return axiosInstance.get<IUser>('auth/profile', {
+    headers: {
+      'Authorization': `Bearer ${ token }`
+    }
+  })
 }
 
 export const AuthService = {
-    register,
-    login,
-    profile
+  register,
+  login,
+  profile
 }

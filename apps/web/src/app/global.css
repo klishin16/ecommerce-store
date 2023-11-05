@@ -83,3 +83,41 @@ body {
     overflow-x: hidden;
     background-color: rgb(246, 246, 246);
 }
+
+.ant-table-wrapper {
+  height: 100%;
+
+  .ant-spin-nested-loading {
+    height: 100%;
+
+    .ant-spin-container {
+      height: 100%;
+      display: flex;
+      flex-flow: column nowrap;
+
+      .ant-table {
+        flex: auto;
+        overflow: hidden;
+
+        .ant-table-container {
+          height: 100%;
+          display: flex;
+          flex-flow: column nowrap;
+
+          .ant-table-thead {
+            flex: none;
+          }
+
+          .ant-table-tbody {
+            flex: auto;
+            overflow: scroll;
+          }
+        }
+      }
+
+      .ant-table-pagination {
+        flex: none;
+      }
+    }
+  }
+}

@@ -8,11 +8,9 @@ export const useRequest = <Data>(request: () => Promise<Data>): [Data | null, bo
 
     const execution = () => {
         setLoading(true)
-        setTimeout(() => {
-            request()
-                .then(response => setData(response))
-                .finally(() => setLoading(false))
-        }, 1000)
+        request()
+            .then(response => setData(response))
+            .finally(() => setLoading(false))
     }
 
     useEffect(() => execution(), []);

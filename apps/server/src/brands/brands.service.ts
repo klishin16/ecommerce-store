@@ -4,6 +4,7 @@ import { UpdateBrandDto } from './dto/update-brand.dto';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Brand } from "./entities/brand.entity";
 import { Repository } from "typeorm";
+import { IBrand, IPagination, IPaginationResponseData } from "@ecommerce-store/common";
 
 @Injectable()
 export class BrandsService {
@@ -17,6 +18,18 @@ export class BrandsService {
     return this.brandRepository.find();
   }
 
+  async findWithPagination(pagination: IPagination): Promise<IPaginationResponseData<IBrand>> {
+    const query = this.brandRepository.createQueryBuilder('user')
+
+    if (!isNaN(pagination.skip) && !isNaN(pagination.limit)) {
+      query.skip(pagination.skip)
+      query.take(pagination.limit)
+    }
+    console.log('findWithPagination', query.getSql())
+
+    return query.getManyAndCount().then(response => ({data: response[0], count: response[1]}))
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} brand`;
   }
@@ -26,6 +39,6 @@ export class BrandsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} brand`;
+    return this.brandRepository.delete(id);
   }
 }

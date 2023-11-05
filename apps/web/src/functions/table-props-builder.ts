@@ -1,21 +1,24 @@
+import React from "react";
+
 export type TableColumnProps = {
     title: string,
     dataIndex: string,
-    key: string,
-    render?: any
+    key: string | number,
+    render?: any;
 }
-export type generateTableColumnProps = {
-    title: string,
-    render?: any
+export interface IGenerateTableColumnProps {
+    title: string;
+    key?: number | string;
+    render?: any;
 }
 
-export function generateTableConfig(columnProps: generateTableColumnProps[]): TableColumnProps[] {
-    return columnProps.map((columnTitle: generateTableColumnProps) => {
+export function generateTableConfig(columnProps: IGenerateTableColumnProps[]): TableColumnProps[] {
+    return columnProps.map((columnProps: IGenerateTableColumnProps) => {
         return {
-            title: columnTitle.title.length >= 2 ? columnTitle.title[0].toUpperCase() + columnTitle.title.slice(1) : columnTitle.title,
-            dataIndex: columnTitle.title,
-            key: columnTitle.title,
-            render: columnTitle.render
+            title: columnProps.title.length >= 2 ? columnProps.title[0].toUpperCase() + columnProps.title.slice(1) : columnProps.title,
+            dataIndex: columnProps.title,
+            key: columnProps.key ?? columnProps.title,
+            render: columnProps.render
         }
     })
 }

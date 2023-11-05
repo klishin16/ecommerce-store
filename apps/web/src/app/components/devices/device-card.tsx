@@ -30,7 +30,6 @@ interface IDeviceCardProps {
 
 const DeviceCard: React.FC<IDeviceCardProps> = ({ device }) => {
     const router = useRouter();
-    const pathname = usePathname();
     const dispatch = useAppDispatch();
     const { isPermissionActive } = usePermission()
 

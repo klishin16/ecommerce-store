@@ -1,53 +1,27 @@
-import axios from "axios";
-import { BACKEND_URL } from "@/constants";
-import {
-    IAddBasketDeviceDto,
-    IBasket,
-    ICreateBasketDto,
-    IPurchase,
-    IRemoveBasketDeviceDto
-} from "@ecommerce-store/common";
+import { IAddBasketDeviceDto, IBasket, IPurchase, IRemoveBasketDeviceDto } from "@ecommerce-store/common";
+import { BaseApiService } from "@/services/base-api.service";
 
 
-const fetch = async (token: string, basket_id: number): Promise<IBasket> => {
-    return axios.get<IBasket>(BACKEND_URL + 'baskets/' + basket_id, {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json;charset=utf-8'
-        }
-    }).then((response) => response.data);
+class BasketApiService extends BaseApiService<IBasket> {
+    constructor() {
+        super('baskets');
+    }
+
+    public addDevice = async (token: string, payload: IAddBasketDeviceDto): Promise<IPurchase> => {
+        return this.axiosInstance.post<IPurchase>(this.apiPrefix + '/add-device', payload, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+    }
+
+    public removeDevice = async (token: string, payload: IRemoveBasketDeviceDto) => {
+        return this.axiosInstance.post( this.apiPrefix + '/remove-device', payload, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+    }
 }
 
-const create = async (token: string, payload: ICreateBasketDto): Promise<IBasket> => {
-    return axios.post<IBasket>(BACKEND_URL + 'baskets', payload, {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json;charset=utf-8'
-        }
-    }).then((response) => response.data);
-}
-
-const addDevice = async (token: string, payload: IAddBasketDeviceDto): Promise<IPurchase> => {
-    return axios.post<IPurchase>(BACKEND_URL + 'baskets/add-device', payload, {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json;charset=utf-8'
-        }
-    }).then((response) => response.data);
-}
-
-const removeDevice = async (token: string, payload: IRemoveBasketDeviceDto) => {
-    return axios.post(BACKEND_URL + 'baskets/remove-device', payload, {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json;charset=utf-8'
-        }
-    }).then((response) => response.data);
-}
-
-export const BasketService = {
-    fetch,
-    create,
-    addDevice,
-    removeDevice
-}
+export const BasketService = new BasketApiService()

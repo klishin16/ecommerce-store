@@ -1,14 +1,13 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, MenuProps, theme } from 'antd';
 import styled from "styled-components";
-import { useTypedSelector } from "@/hooks";
 import Link from "next/link";
 import { sidebarItems } from "@/constants";
 import { Content } from "antd/es/layout/layout";
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 
-const { Header, Footer, Sider } = Layout;
+const {Header, Footer, Sider} = Layout;
 
 const Logo = styled.div`
   height: 32px;
@@ -18,65 +17,55 @@ const Logo = styled.div`
 `
 
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
+export default function AdminLayout({children}: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const {
+    token: {colorBgContainer},
+  } = theme.useToken();
 
-    const { user } = useTypedSelector(state => state.auth)
+  const [collapseSide, setCollapseSide] = useState(false);
 
-    const [collapseSide, setCollapseSide] = useState(false);
+  const onCollapse = (collapsed: boolean) => {
+    setCollapseSide(collapsed)
+  };
 
-    const onCollapse = (collapsed: boolean) => {
-        setCollapseSide(collapsed)
-    };
+  const [selectedItem, setSelectedItem] = useState<number | null>(null);
+  useEffect(() => {
+    console.log(`Route changed to: ${ pathname }`);
+    const index = Object.values(sidebarItems.map(v => v.view)).findIndex((route) => route === pathname ?? 0);
+    console.log('Route index', index)
+    setSelectedItem(index);
+  }, [pathname]);
 
-    const [selectedItem, setSelectedItem] = useState<number>(0);
-    useEffect(() => {
-        setSelectedItem(sidebarItems.findIndex((sidebarItem) => sidebarItem.view === pathname ?? 0))
-    }, [pathname])
+  const menuItems: MenuProps['items'] = sidebarItems.map((sidebarItem, index) => ({
+    key: index,
+    icon: sidebarItem.icon,
+    label: <Link href={ sidebarItem.view }>{ sidebarItem.title }</Link>
+  }))
 
-    const menuItems = () => sidebarItems.map((menuItem, index) => (
-        <Menu.Item key={ index } icon={ menuItem.icon }>
-            <Link href={ menuItem.view }>{ menuItem.title }</Link>
-        </Menu.Item>
-    ))
+  return (
+    <Layout style={ {minHeight: '100vh'} }>
+      <Sider collapsible collapsed={ collapseSide } onCollapse={ onCollapse }>
+        <Logo/>
 
-    return (
-        <Layout style={ { minHeight: '100vh' } }>
-            <Sider collapsible collapsed={ collapseSide } onCollapse={ onCollapse }>
-                <Logo/>
+        { selectedItem !== null &&
+          <Menu
+            theme="dark"
+            mode="inline"
+            items={ menuItems }
+            defaultSelectedKeys={ [selectedItem.toString()] }
+          />
+        }
 
-                <Menu
-                    theme="dark"
-                    defaultSelectedKeys={ [selectedItem.toString()] }
-                    mode="inline"
-                >
-                    { menuItems() }
-                </Menu>
-            </Sider>
+      </Sider>
 
-            <Layout>
-                <Header style={ { padding: 0, background: colorBgContainer } }/>
-                <Content style={ { margin: '0 16px' } }>
-                    { children }
-                </Content>
-                <Footer style={ { textAlign: 'center' } }>Ant Design ©2023 Created by Ant UED</Footer>
-            </Layout>
-
-            {/*<Layout className="site-layout">*/ }
-            {/*    <AdminPageHeader className="site-layout-background">*/ }
-            {/*        <Row style={ { height: '100%' } } justify={ "end" } align={ "middle" }>*/ }
-            {/*            { user && <Text>{ user.email }</Text> }*/ }
-            {/*            <Button style={ { marginLeft: '1vw', marginRight: '1vw' } } danger ghost={ true }*/ }
-            {/*                    onClick={ logout }>Logout</Button>*/ }
-            {/*        </Row>*/ }
-            {/*    </AdminPageHeader>*/ }
-
-            {/*    */ }
-            {/*    <Footer style={ { textAlign: 'center' } }>©2021 Created by klishin16</Footer>*/ }
-            {/*</Layout>*/ }
-        </Layout>
-    );
+      <Layout>
+        <Header style={ {padding: 0, background: colorBgContainer} }/>
+        <Content style={ {margin: '0 16px'} }>
+          { children }
+        </Content>
+        <Footer style={ {textAlign: 'center'} }>Ant Design ©2023 Created by klishin16</Footer>
+      </Layout>
+    </Layout>
+  );
 };

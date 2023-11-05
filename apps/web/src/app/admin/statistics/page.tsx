@@ -5,6 +5,7 @@ import { Content } from "antd/es/layout/layout";
 import { useRequest } from "@/hooks";
 import { StatisticsService } from "@/services/statistics.service";
 import { IStatistics } from "@ecommerce-store/common";
+import AppBreadcrumbs from "@/app/components/breadcrumbs";
 
 const StatisticView: React.FC = () => {
     const [statistics, loading] = useRequest<IStatistics>(() =>
@@ -17,43 +18,47 @@ const StatisticView: React.FC = () => {
 
 
     return (
-        <Layout>
+        <>
+          <AppBreadcrumbs />
+
+          <Layout>
             <Content>
-                <Row gutter={16} justify={"center"} align={"middle"} style={{marginTop: '1.6vh'}}>
-                    <Space />
+              <Row gutter={16} justify={"center"} align={"middle"} style={{marginTop: '1.6vh'}}>
+                <Space />
 
-                    <Col span={10} className="gutter-row">
-                        <Card style={{height: '180px'}}>
-                            <Row>
-                                <Col span={12}>
-                                    <Statistic title="Active Users" value={statistics.users}/>
-                                </Col>
-                                <Col span={12}>
-                                    <Statistic title="Devices" value={statistics.devices}/>
-                                </Col>
-                            </Row>
-                        </Card>
-                    </Col>
+                <Col span={10} className="gutter-row">
+                  <Card style={{height: '180px'}}>
+                    <Row>
+                      <Col span={12}>
+                        <Statistic title="Active Users" value={statistics.users}/>
+                      </Col>
+                      <Col span={12}>
+                        <Statistic title="Devices" value={statistics.devices}/>
+                      </Col>
+                    </Row>
+                  </Card>
+                </Col>
 
-                    {/*<Space direction={"horizontal"} />*/}
+                {/*<Space direction={"horizontal"} />*/}
 
-                    <Col span={10} className="gutter-row">
-                        <Card style={{height: '180px'}}>
-                            <Row>
-                                <Col span={12}>
-                                    <Statistic title="Brands" value={statistics.brands}/>
-                                </Col>
-                                <Col span={12}>
-                                    <Statistic title="Categories" value={statistics.categories}/>
-                                </Col>
-                            </Row>,
-                        </Card>
-                    </Col>
+                <Col span={10} className="gutter-row">
+                  <Card style={{height: '180px'}}>
+                    <Row>
+                      <Col span={12}>
+                        <Statistic title="Brands" value={statistics.brands}/>
+                      </Col>
+                      <Col span={12}>
+                        <Statistic title="Categories" value={statistics.categories}/>
+                      </Col>
+                    </Row>,
+                  </Card>
+                </Col>
 
-                    <Space />
-                </Row>
+                <Space />
+              </Row>
             </Content>
-        </Layout>
+          </Layout>
+        </>
     );
 };
 

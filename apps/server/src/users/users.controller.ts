@@ -9,6 +9,8 @@ import { Roles } from "../auth/roles-auth.decorator";
 import { UsersRolesService } from "./users-roles.service";
 import { RolesGuard } from "../auth/guards/role.guard";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { GetPagination } from "../decorators/get-pagination";
+import { IPagination } from "@ecommerce-store/common";
 
 @Controller('users')
 export class UsersController {
@@ -19,6 +21,11 @@ export class UsersController {
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
         return this.usersService.create(createUserDto);
+    }
+
+    @Get('with-pagination')
+    findWithPagination(@GetPagination() pagination: IPagination) {
+      return this.usersService.findWithPagination(pagination);
     }
 
     @Get()

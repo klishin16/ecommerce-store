@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react';
-import { Card, Spin } from "antd";
+import { Card } from "antd";
 import { useAppDispatch, usePermission, useTypedSelector } from "@/hooks";
 import styled from "styled-components";
 import { devicesActions } from "@/redux/features/devices.slice";
@@ -9,6 +9,7 @@ import DeviceCard from "@/app/components/devices/device-card";
 import withSettings from "@/app/components/HOC/withSettings";
 import Title from "antd/es/typography/Title";
 import { AppColors } from "@/constants";
+import Loader from "@/app/components/loader";
 
 
 const DevicesPageContainer = styled("div")`
@@ -66,12 +67,10 @@ const DevicesPage = () => {
   const devicesWithSale = devices.filter(device => !!device.sale);
   const devicesWithoutSale = devices.filter(device => !device.sale);
 
-  const devicesCards = devices.map(device => <DeviceCard key={ device.id } device={ device }></DeviceCard>)
-
   if (isLoading) {
     return (
       <DevicesPageContainer className='devices-page-container'>
-        <Spin/>
+        <Loader />
       </DevicesPageContainer>
     )
   }
@@ -89,17 +88,17 @@ const DevicesPage = () => {
           <>
             <Card size='small'><Title level={3} style={{ margin: 0, color: AppColors.GREEN }}>DISCOUNTS</Title></Card>
             <DeviceCardsContainer className='devices-cards-container--sales-sections'>
-              { devicesWithSale.map(device => <DeviceCard key={ device.id } device={ device }></DeviceCard>) }
+              { devicesWithSale.map(device => <DeviceCard key={ device.id + '1' } device={ device }></DeviceCard>) }
             </DeviceCardsContainer>
 
             <Card size='small'><Title level={3} style={{ margin: 0 }}>NO DISCOUNTS</Title></Card>
             <DeviceCardsContainer className='devices-cards-container'>
-              { devicesWithoutSale.map(device => <DeviceCard key={ device.id } device={ device }></DeviceCard>) }
+              { devicesWithoutSale.map(device => <DeviceCard key={ device.id + '2' } device={ device }></DeviceCard>) }
             </DeviceCardsContainer>
           </> :
           <>
             <DeviceCardsContainer className='devices-cards-container'>
-              { devices.map(device => <DeviceCard key={ device.id } device={ device }></DeviceCard>) }
+              { devices.map(device => <DeviceCard key={ device.id + '3' } device={ device }></DeviceCard>) }
             </DeviceCardsContainer>
           </>
         }

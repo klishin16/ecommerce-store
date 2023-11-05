@@ -1,3 +1,5 @@
+import { IUser } from "../models";
+
 export interface IRegisterPayload {
     email: string;
     password: string;
@@ -14,4 +16,5 @@ export interface ILoginPayload {
 
 export interface ILoginResponseData {
     access_token: string;
+    user: IUser;
 }

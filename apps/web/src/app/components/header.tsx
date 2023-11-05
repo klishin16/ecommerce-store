@@ -10,7 +10,8 @@ import Link from "next/link";
 import { APP_TITLE, ERoutes } from "@/constants";
 import { authActions } from "@/redux/features/auth.slice";
 import { useBasket } from "@/hooks/useBasket";
-import { EUserRoles } from "@ecommerce-store/common";
+import { EUserRoles, IPurchase } from "@ecommerce-store/common";
+import withBasket from "@/app/components/HOC/withBasket";
 
 const HeaderContainer = styled.div`
     position: fixed;
@@ -32,13 +33,13 @@ const HeaderLogoContainer = styled.div`
     display: flex;
     align-items: center;
 `
-
-const AppHeader = () => {
+interface IAppHeaderProps {
+  purchases: IPurchase[]
+}
+const AppHeader: React.FC<IAppHeaderProps> = ({ purchases }) => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const {user} = useAuthSession();
-    const {id} = useBasket();
-    const {purchases} = useTypedSelector(state => state.basket);
 
     const logout = () => {
         dispatch(authActions.logout())
@@ -75,7 +76,7 @@ const AppHeader = () => {
             <Badge count={ purchases?.length ?? 0 }>
                 <Button type={ "link" } onClick={ basketButtonClickHandler } key="6">Basket</Button>
             </Badge>
-            { user.role === EUserRoles.ADMIN &&
+            { [EUserRoles.ADMIN, EUserRoles.EDITOR].includes(user.role) &&
                 <Button type={ "link" } onClick={ () => router.push(ERoutes.ADMIN) } key="6">Admin</Button> }
             <Button type={ "link" } onClick={ () => logout() } key="7">Logout</Button>
 
@@ -108,4 +109,4 @@ const AppHeader = () => {
     );
 };
 
-export default AppHeader;
+export default withBasket(AppHeader);

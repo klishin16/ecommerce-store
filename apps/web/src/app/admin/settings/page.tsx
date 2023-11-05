@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react';
-import { Button, Card, Col, Divider, Form, Input, Layout, Row, Space, Switch, Typography } from "antd";
+import { Button, Card, Col, Divider, Form, Input, Row, Space, Switch, Typography } from "antd";
 import { useAppDispatch, useTypedSelector } from "@/hooks";
 import { settingsActions } from "@/redux/features/settings.slice";
 import { ESettingsKinds, EThemes, ISettingsSaveDto } from "@ecommerce-store/common";

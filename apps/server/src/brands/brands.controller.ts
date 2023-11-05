@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { BrandsService } from './brands.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
+import { GetPagination } from "../decorators/get-pagination";
+import { IPagination } from "@ecommerce-store/common";
 
 @Controller('brands')
 export class BrandsController {
@@ -10,6 +12,11 @@ export class BrandsController {
   @Post()
   create(@Body() createBrandDto: CreateBrandDto) {
     return this.brandsService.create(createBrandDto);
+  }
+
+  @Get('with-pagination')
+  findWithPagination(@GetPagination() pagination: IPagination) {
+    return this.brandsService.findWithPagination(pagination);
   }
 
   @Get()

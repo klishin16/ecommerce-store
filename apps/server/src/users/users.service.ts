@@ -6,6 +6,7 @@ import { User } from "./entities/user.entity";
 import { Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { BanUserDto } from "./dto/ban-user.dto";
+import { IDevice, IPagination, IPaginationResponseData, IUser } from "@ecommerce-store/common";
 
 @Injectable()
 export class UsersService {
@@ -13,7 +14,7 @@ export class UsersService {
     }
 
     async create(createUserDto: CreateUserDto) {
-        const existUser = await this.usersRepository.findOne({ where: { email: createUserDto.email } });
+        const existUser = await this.usersRepository.findOne({where: {email: createUserDto.email}});
         if (existUser) {
             throw new UnprocessableEntityException('Email already exists');
         }
@@ -28,24 +29,36 @@ export class UsersService {
         return this.usersRepository.find();
     }
 
+    async findWithPagination(pagination: IPagination): Promise<IPaginationResponseData<IUser>> {
+        const query = this.usersRepository.createQueryBuilder('user')
+
+        if (!isNaN(pagination.skip) && !isNaN(pagination.limit)) {
+            query.skip(pagination.skip)
+            query.take(pagination.limit)
+        }
+        console.log('findWithPagination', query.getSql())
+
+        return query.getManyAndCount().then(response => ({data: response[0], count: response[1]}))
+    }
+
     findOne(id: number) {
-        return this.usersRepository.findOne({ where: { id } })
+        return this.usersRepository.findOne({where: {id}})
     }
 
     findOneByEmail(email: string) {
-        return this.usersRepository.findOne({ where: { email } })
+        return this.usersRepository.findOne({where: {email}})
     }
 
     update(id: number, updateUserDto: UpdateUserDto) {
-        return this.usersRepository.update({ id }, updateUserDto);
+        return this.usersRepository.update({id}, updateUserDto);
     }
 
     remove(id: number) {
-        return this.usersRepository.delete({ id })
+        return this.usersRepository.delete({id})
     }
 
     async banUser(banUserDto: BanUserDto) {
-        const user = await this.usersRepository.findOne({ where: { id: banUserDto.userId } });
+        const user = await this.usersRepository.findOne({where: {id: banUserDto.userId}});
         if (!user) {
             throw new NotFoundException('User not found!')
         }

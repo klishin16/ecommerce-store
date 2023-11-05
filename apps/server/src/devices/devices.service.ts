@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Device } from "./entities/device.entity";
 import { Repository } from "typeorm";
 import { WithFiltersDto } from "./dto/with-filters.dto";
+import { IDevice, IPagination, IPaginationResponseData } from "@ecommerce-store/common";
 
 @Injectable()
 export class DevicesService {
@@ -16,6 +17,26 @@ export class DevicesService {
 
   findAll() {
     return this.deviceRepository.find({ relations: ['brand'] });
+  }
+
+  async findWithPagination(pagination: IPagination): Promise<IPaginationResponseData<IDevice>> {
+    const query = this.deviceRepository.createQueryBuilder('device')
+
+    if (pagination.search) {
+      query.andWhere('device.name LIKE :search', { search: `%${pagination.search}%` })
+    }
+    if (pagination.sort) {
+      const sorts = pagination.sort.map((sortField) => [sortField.field, sortField.by])
+      query.orderBy(Object.fromEntries(sorts))
+    }
+    if (!isNaN(pagination.skip) && !isNaN(pagination.limit)) {
+      console.log('skip', pagination.skip)
+      query.skip(pagination.skip)
+      query.take(pagination.limit)
+    }
+    console.log('findWithPagination', query.getSql())
+
+    return query.getManyAndCount().then(response => ({ data: response[0], count: response[1] }))
   }
 
   findOne(id: number) {
