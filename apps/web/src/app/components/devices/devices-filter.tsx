@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
-import { Button, Card, CardProps, Col, Form, InputNumber, Row, Select, Slider, Typography } from "antd";
+import { Button, Card, CardProps, Col, Form, FormInstance, InputNumber, Row, Select, Slider, Typography } from "antd";
 import { useAppDispatch, useRequest, useTypedSelector } from "@/hooks";
 import { BrandsService, CategoriesService } from "@/services";
 import { addNotification } from "@/redux/features/notifications.slice";
@@ -18,14 +18,14 @@ const {Title} = Typography
 const minPriceRange = 0;
 const maxPriceRange = 10000;
 
-interface IDevicesFiltersForm {
+export interface IDevicesFiltersForm {
     minPrice: number;
     maxPrice: number;
 }
 
 const initialFilterState: IDevicesFiltersForm = {
-    minPrice: 100,
-    maxPrice: 1000
+    minPrice: minPriceRange,
+    maxPrice: maxPriceRange
 }
 
 export interface IDevicesFilters {
@@ -35,11 +35,14 @@ export interface IDevicesFilters {
     brandsIds?: number[];
 }
 
-const DevicesFilter = () => {
+interface IDeviceFilterProps {
+    form: FormInstance<IDevicesFiltersForm>
+}
+
+const DevicesFilter: React.FC<IDeviceFilterProps> = ({ form }) => {
     const {isLoading} = useTypedSelector(state => state.devices);
     const dispatch = useAppDispatch();
 
-    const [form] = Form.useForm<IDevicesFiltersForm>()
     const minPrice = Form.useWatch('minPrice', form);
     const maxPrice = Form.useWatch('maxPrice', form);
     const applyFilters = (values: IDevicesFiltersForm) => {

@@ -1,10 +1,10 @@
 'use client'
 import React, { useEffect } from 'react';
-import { Card } from "antd";
+import { Button, Card, Empty, Form } from "antd";
 import { useAppDispatch, usePermission, useTypedSelector } from "@/hooks";
 import styled from "styled-components";
 import { devicesActions } from "@/redux/features/devices.slice";
-import DevicesFilter from "@/app/components/devices/devices-filter";
+import DevicesFilter, { IDevicesFiltersForm } from "@/app/components/devices/devices-filter";
 import DeviceCard from "@/app/components/devices/device-card";
 import withSettings from "@/app/components/HOC/withSettings";
 import Title from "antd/es/typography/Title";
@@ -55,56 +55,77 @@ const DeviceCardsContainer = styled.div`
   justify-items: center;
 `
 
+const EmptyContainer = styled.div`
+  width: 100%;
+`
+
 const DevicesPage = () => {
-  const dispatch = useAppDispatch();
-  const {isPermissionActive} = usePermission()
-  const {devices, isLoading} = useTypedSelector(state => state.devices);
+    const dispatch = useAppDispatch();
+    const {isPermissionActive} = usePermission()
+    const {devices, isLoading} = useTypedSelector(state => state.devices);
 
-  useEffect(() => {
-    dispatch(devicesActions.fetchDevices());
-  }, [dispatch])
+    useEffect(() => {
+        dispatch(devicesActions.fetchDevices());
+    }, [dispatch])
 
-  const devicesWithSale = devices.filter(device => !!device.sale);
-  const devicesWithoutSale = devices.filter(device => !device.sale);
+    const [form] = Form.useForm<IDevicesFiltersForm>()
+    const resetFilters = () => {
+        form.resetFields();
+        form.submit()
+    }
 
-  if (isLoading) {
-    return (
-      <DevicesPageContainer className='devices-page-container'>
-        <Loader />
-      </DevicesPageContainer>
+    const devicesWithSale = devices.filter(device => !!device.sale);
+    const devicesWithoutSale = devices.filter(device => !device.sale);
+
+    const devicesContainer = (
+        <DevicesScrollableContainer>
+            { isPermissionActive('sales-section') && devicesWithSale.length && devicesWithoutSale.length ?
+                <>
+                    <Card size='small'><Title level={ 3 }
+                                              style={ {margin: 0, color: AppColors.GREEN} }>DISCOUNTS</Title></Card>
+                    <DeviceCardsContainer className='devices-cards-container--sales-sections'>
+                        { devicesWithSale.map(device => <DeviceCard key={ device.id + '1' }
+                                                                    device={ device }></DeviceCard>) }
+                    </DeviceCardsContainer>
+
+                    <Card size='small'><Title level={ 3 } style={ {margin: 0} }>NO DISCOUNTS</Title></Card>
+                    <DeviceCardsContainer className='devices-cards-container'>
+                        { devicesWithoutSale.map(device => <DeviceCard key={ device.id + '2' }
+                                                                       device={ device }></DeviceCard>) }
+                    </DeviceCardsContainer>
+                </> :
+                <>
+                    <DeviceCardsContainer className='devices-cards-container'>
+                        { devices.map(device => <DeviceCard key={ device.id + '3' } device={ device }></DeviceCard>) }
+                    </DeviceCardsContainer>
+                </>
+            }
+        </DevicesScrollableContainer>
     )
-  }
 
-  return (
-    <DevicesPageContainer className='devices-page-container'>
-      { isPermissionActive('filters') &&
-        <DevicesFiltersContainer>
-          <DevicesFilter/>
-        </DevicesFiltersContainer>
-      }
+    if (isLoading) {
+        return (
+            <DevicesPageContainer className='devices-page-container'>
+                <Loader/>
+            </DevicesPageContainer>
+        )
+    }
 
-      <DevicesScrollableContainer>
-        { isPermissionActive('sales-section') ?
-          <>
-            <Card size='small'><Title level={3} style={{ margin: 0, color: AppColors.GREEN }}>DISCOUNTS</Title></Card>
-            <DeviceCardsContainer className='devices-cards-container--sales-sections'>
-              { devicesWithSale.map(device => <DeviceCard key={ device.id + '1' } device={ device }></DeviceCard>) }
-            </DeviceCardsContainer>
-
-            <Card size='small'><Title level={3} style={{ margin: 0 }}>NO DISCOUNTS</Title></Card>
-            <DeviceCardsContainer className='devices-cards-container'>
-              { devicesWithoutSale.map(device => <DeviceCard key={ device.id + '2' } device={ device }></DeviceCard>) }
-            </DeviceCardsContainer>
-          </> :
-          <>
-            <DeviceCardsContainer className='devices-cards-container'>
-              { devices.map(device => <DeviceCard key={ device.id + '3' } device={ device }></DeviceCard>) }
-            </DeviceCardsContainer>
-          </>
-        }
-      </DevicesScrollableContainer>
-    </DevicesPageContainer>
-  );
+    return (
+        <DevicesPageContainer className='devices-page-container'>
+            { isPermissionActive('filters') &&
+                <DevicesFiltersContainer>
+                    <DevicesFilter form={ form }/>
+                </DevicesFiltersContainer>
+            }
+            { devices.length ? devicesContainer :
+                <EmptyContainer>
+                    <Empty description='No products'>
+                        <Button type='primary' onClick={ resetFilters }>Reset filters</Button>
+                    </Empty>
+                </EmptyContainer> }
+        </DevicesPageContainer>
+    );
 };
 
 export default withSettings(DevicesPage);

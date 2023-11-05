@@ -17,17 +17,9 @@ const loadUserBasket = createAsyncThunk(
   "basket/load",
   async (payload: { token: string, user: IUser }, thunkAPI) => {
     try {
-      const basket = payload.user.basketId ?
-        await BasketService.fetch(payload.token, payload.user.basketId) :
-        await BasketService.create(payload.token, {userId: payload.user.id})
-
-      thunkAPI.dispatch(addNotification({
-        title: 'Basket',
-        message: basket.id?.toString() || '',
-        type: 'success',
-      }));
-      console.log('basket', basket)
-      return basket;
+        return payload.user.basketId ?
+          await BasketService.fetch(payload.token, payload.user.basketId) :
+          await BasketService.create(payload.token, {userId: payload.user.id});
     } catch (error) {
       thunkAPI.dispatch(
         addNotification({
@@ -47,7 +39,6 @@ const addDevice = createAsyncThunk(
   async ({device, amount}: { device: IDevice, amount: number }, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState
-      console.log('state', state)
       const token = state.auth.token;
       const basket = state.basket
       if (!token) {
