@@ -20,13 +20,7 @@ const fetchDevices = createAsyncThunk(
     async (_, thunkAPI) => {
         console.log('loadDevices')
         try {
-            const devices = await DevicesService.fetchAll();
-            thunkAPI.dispatch(addNotification({
-                title: 'Devices',
-                message: 'Devices loaded successfully',
-                type: 'success',
-            }));
-            return devices;
+            return await DevicesService.fetchAll();
         } catch (error) {
             thunkAPI.dispatch(
                 addNotification({

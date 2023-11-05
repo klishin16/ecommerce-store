@@ -33,8 +33,9 @@ export default function AdminLayout({children}: { children: React.ReactNode }) {
   useEffect(() => {
     console.log(`Route changed to: ${ pathname }`);
     const index = Object.values(sidebarItems.map(v => v.view)).findIndex((route) => route === pathname ?? 0);
-    console.log('Route index', index)
-    setSelectedItem(index);
+    if (index >= 0) {
+      setSelectedItem(index)
+    }
   }, [pathname]);
 
   const menuItems: MenuProps['items'] = sidebarItems.map((sidebarItem, index) => ({

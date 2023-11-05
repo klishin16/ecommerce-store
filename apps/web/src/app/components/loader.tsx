@@ -14,7 +14,7 @@ const LoaderContainer = styled.div`
 const Loader = () => {
   return (
     <LoaderContainer className='loader-container'>
-      <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}/>
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} size='large' />
     </LoaderContainer>
   );
 };
