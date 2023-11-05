@@ -28,7 +28,7 @@ export abstract class BaseApiService<T> {
   }
 
   public create = <CreateDto>(token: string, payload: CreateDto) => {
-    return this.axiosInstance.post<T[]>(this.apiPrefix, payload, {
+    return this.axiosInstance.post<T>(this.apiPrefix, payload, {
       headers: {
         'Authorization': `Bearer ${ token }`
       }

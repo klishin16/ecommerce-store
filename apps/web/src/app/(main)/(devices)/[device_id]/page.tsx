@@ -4,13 +4,13 @@ import { useAppDispatch, useRequest } from "@/hooks";
 import React from "react";
 import { Button, Card, Col, Image, Row, Spin, Typography } from "antd";
 import { ERoutes, IMAGE_STORAGE_URL } from "@/constants";
-import { DevicesService } from "@/services";
 import { addNotification } from "@/redux/features/notifications.slice";
 import { errorHandler } from "@/functions/error-handler";
 import { basketActions } from "@/redux/features/basket.slice";
 import { useRouter } from "next/navigation";
 import { IDevice } from "@ecommerce-store/common";
 import withSettings from "@/app/components/HOC/withSettings";
+import { DevicesService } from "@/services";
 
 const { Title, Text } = Typography;
 

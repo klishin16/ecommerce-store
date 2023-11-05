@@ -4,16 +4,15 @@ import { useEffect } from "react";
 import { basketActions } from "@/redux/features/basket.slice";
 
 export const useBasket = () => {
-    const { user } = useTypedSelector(state => state.auth);
+    const { token, user } = useTypedSelector(state => state.auth);
     const { id: basket_id, purchases } = useTypedSelector(state => state.basket);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        console.log('useBasket', user, basket_id)
-        if (user) {
+        if (token && user) {
             if (!basket_id) {
                 console.log('loadBasket')
-                dispatch(basketActions.loadUserBasket(user)).then((v) => {
+                dispatch(basketActions.loadUserBasket({ token, user })).then((v) => {
                     console.log('loadUserBasket result', v)
                 });
             }

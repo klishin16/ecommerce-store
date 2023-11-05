@@ -13,4 +13,4 @@ class DevicesApiService extends BaseApiService<IDevice> {
   }
 }
 
-export const DeviceService = new DevicesApiService();
+export const DevicesService = new DevicesApiService();

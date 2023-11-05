@@ -13,7 +13,6 @@ const load = async (): Promise<ISettings<ESettingsKinds>[]> => {
 
 const save = async (payload: ISettingsSaveDto): Promise<ISettingsSaveResponseData> => {
     return axios.post<ISettingsSaveDto>(BACKEND_URL + "settings/save", payload)
-        .then((response) => response.data);
 };
 
 export const SettingsService = {

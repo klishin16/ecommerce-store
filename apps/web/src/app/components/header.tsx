@@ -4,12 +4,11 @@ import { Badge, Button } from "antd";
 import styled from "styled-components";
 import { UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import Title from "antd/es/typography/Title";
-import { useAppDispatch, useAuthSession, useTypedSelector } from "@/hooks";
+import { useAppDispatch, useAuthSession } from "@/hooks";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { APP_TITLE, ERoutes } from "@/constants";
 import { authActions } from "@/redux/features/auth.slice";
-import { useBasket } from "@/hooks/useBasket";
 import { EUserRoles, IPurchase } from "@ecommerce-store/common";
 import withBasket from "@/app/components/HOC/withBasket";
 
