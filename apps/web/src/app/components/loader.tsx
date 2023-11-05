@@ -1,6 +1,7 @@
 import React from 'react';
 import { Spin } from "antd";
 import styled from "styled-components";
+import { LoadingOutlined } from "@ant-design/icons";
 
 
 const LoaderContainer = styled.div`
@@ -13,7 +14,7 @@ const LoaderContainer = styled.div`
 const Loader = () => {
   return (
     <LoaderContainer className='loader-container'>
-      <Spin/>
+      <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}/>
     </LoaderContainer>
   );
 };
