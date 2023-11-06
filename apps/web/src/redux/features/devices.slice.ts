@@ -38,14 +38,7 @@ const fetchDevicesWithFilter = createAsyncThunk(
     async (filters: IDevicesFilters,thunkAPI) => {
         console.log('loadDevices')
         try {
-            const devices = await DevicesService.fetchWithFilters(filters);
-            console.log('devices', devices)
-            thunkAPI.dispatch(addNotification({
-                title: 'Devices',
-                message: 'Devices loaded successfully',
-                type: 'success',
-            }));
-            return devices;
+            return await DevicesService.fetchWithFilters(filters);
         } catch (error) {
             thunkAPI.dispatch(
                 addNotification({

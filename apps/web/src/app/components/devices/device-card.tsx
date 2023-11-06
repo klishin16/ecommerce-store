@@ -12,7 +12,9 @@ import { useAppDispatch, usePermission } from "@/hooks";
 import { IDevice } from "@ecommerce-store/common";
 
 const DeviceCardContainer = styled.div`
-  width: 100%;
+  //width: 100%;
+  flex: 1 16%;
+  max-width: 20%;
 
   padding: 12px;
   background-color: rgb(255, 255, 255);
@@ -93,7 +95,7 @@ const DeviceCard: React.FC<IDeviceCardProps> = ({ device }) => {
                 </Row>
             }
 
-            <Row gutter={ 8 } style={{ marginBottom: 8 }}>
+            <Row gutter={ [8, 6] }  style={{ marginBottom: 8 }}>
                 <Col>
                     <Button
                         onClick={ () => buyHandler(device) }

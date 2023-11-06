@@ -40,19 +40,26 @@ const DevicesScrollableContainer = styled.div`
 `
 
 const DeviceCardsContainer = styled.div`
-  margin: auto;
-  flex-basis: 300px;
-  flex-grow: 1;
-  align-self: flex-start;
-  max-width: 80%;
-  padding: 14px;
-  border-radius: 8px;
+  padding: 8px;
+  //border-radius: 8px;
 
-  display: grid;
-  grid-gap: 25px;
-  grid-template-columns: repeat(auto-fit, 230px);
-  grid-template-rows: repeat(auto);
-  justify-items: center;
+  //display: grid;
+  //grid-gap: 25px;
+  //grid-template-columns: repeat(auto-fit, 230px);
+  //grid-template-rows: repeat(auto);
+  //justify-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: auto;
+`
+
+const DevicesSectionCard = styled.div`
+  width: 100%;
+  padding: 8px;
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 20px 0;
 `
 
 const EmptyContainer = styled.div`
@@ -60,72 +67,70 @@ const EmptyContainer = styled.div`
 `
 
 const DevicesPage = () => {
-    const dispatch = useAppDispatch();
-    const {isPermissionActive} = usePermission()
-    const {devices, isLoading} = useTypedSelector(state => state.devices);
+  const dispatch = useAppDispatch();
+  const {isPermissionActive} = usePermission()
+  const {devices, isLoading} = useTypedSelector(state => state.devices);
 
-    useEffect(() => {
-        dispatch(devicesActions.fetchDevices());
-    }, [dispatch])
+  useEffect(() => {
+    dispatch(devicesActions.fetchDevices());
+  }, [dispatch])
 
-    const [form] = Form.useForm<IDevicesFiltersForm>()
-    const resetFilters = () => {
-        form.resetFields();
-        form.submit()
-    }
+  const [form] = Form.useForm<IDevicesFiltersForm>()
+  const resetFilters = () => {
+    form.resetFields();
+    form.submit()
+  }
 
-    const devicesWithSale = devices.filter(device => !!device.sale);
-    const devicesWithoutSale = devices.filter(device => !device.sale);
+  const devicesWithSale = devices.filter(device => !!device.sale);
+  const devicesWithoutSale = devices.filter(device => !device.sale);
 
-    const devicesContainer = (
-        <DevicesScrollableContainer>
-            { isPermissionActive('sales-section') && devicesWithSale.length && devicesWithoutSale.length ?
-                <>
-                    <Card size='small'><Title level={ 3 }
-                                              style={ {margin: 0, color: AppColors.GREEN} }>DISCOUNTS</Title></Card>
-                    <DeviceCardsContainer className='devices-cards-container--sales-sections'>
-                        { devicesWithSale.map(device => <DeviceCard key={ device.id + '1' }
-                                                                    device={ device }></DeviceCard>) }
-                    </DeviceCardsContainer>
-
-                    <Card size='small'><Title level={ 3 } style={ {margin: 0} }>NO DISCOUNTS</Title></Card>
-                    <DeviceCardsContainer className='devices-cards-container'>
-                        { devicesWithoutSale.map(device => <DeviceCard key={ device.id + '2' }
-                                                                       device={ device }></DeviceCard>) }
-                    </DeviceCardsContainer>
-                </> :
-                <>
-                    <DeviceCardsContainer className='devices-cards-container'>
-                        { devices.map(device => <DeviceCard key={ device.id + '3' } device={ device }></DeviceCard>) }
-                    </DeviceCardsContainer>
-                </>
-            }
-        </DevicesScrollableContainer>
-    )
-
-    if (isLoading) {
-        return (
-            <DevicesPageContainer className='devices-page-container'>
-                <Loader/>
-            </DevicesPageContainer>
-        )
-    }
-
+  if (isLoading) {
     return (
-        <DevicesPageContainer className='devices-page-container'>
-            { isPermissionActive('filters') &&
-                <DevicesFiltersContainer>
-                    <DevicesFilter form={ form }/>
-                </DevicesFiltersContainer>
-            }
-            { devices.length ? devicesContainer :
-                <EmptyContainer>
-                    <Empty description='No products'>
-                        <Button type='primary' onClick={ resetFilters }>Reset filters</Button>
-                    </Empty>
-                </EmptyContainer> }
-        </DevicesPageContainer>
-    );
+      <DevicesPageContainer className='devices-page-container'>
+        <Loader/>
+      </DevicesPageContainer>
+    )
+  }
+
+  return (
+    <DevicesPageContainer className='devices-page-container'>
+      { isPermissionActive('filters') &&
+        <DevicesFiltersContainer>
+          <DevicesFilter form={ form }/>
+        </DevicesFiltersContainer>
+      }
+
+      { devices.length ?
+        <DevicesScrollableContainer>
+          { isPermissionActive('sales-section') && devicesWithSale.length && devicesWithoutSale.length ?
+            <>
+              <DeviceCardsContainer className='devices-cards-container--sales-sections'>
+                <DevicesSectionCard style={{ marginBottom: 4 }}>
+                  <Title level={ 3 } style={ {margin: 0, color: AppColors.GREEN} }>DISCOUNTS</Title>
+                </DevicesSectionCard>
+                { devicesWithSale.map(device => <DeviceCard key={ device.id + '1' }
+                                                            device={ device }></DeviceCard>) }
+                <DevicesSectionCard style={{ marginTop: 4, marginBottom: 4 }}>
+                  <Title level={ 3 } style={ {margin: 0} }>NO DISCOUNTS</Title>
+                </DevicesSectionCard>
+                { devicesWithoutSale.map(device => <DeviceCard key={ device.id + '2' }
+                                                               device={ device }></DeviceCard>) }
+              </DeviceCardsContainer>
+            </> :
+            <>
+              <DeviceCardsContainer className='devices-cards-container'>
+                { devices.map(device => <DeviceCard key={ device.id + '3' } device={ device }></DeviceCard>) }
+              </DeviceCardsContainer>
+            </>
+          }
+        </DevicesScrollableContainer> :
+        <EmptyContainer>
+          <Empty description='No products'>
+            <Button type='primary' onClick={ resetFilters }>Reset filters</Button>
+          </Empty>
+        </EmptyContainer> }
+    </DevicesPageContainer>
+  );
 };
 
 export default withSettings(DevicesPage);

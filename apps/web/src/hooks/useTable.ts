@@ -46,7 +46,6 @@ export const useTable = <Data>(request: (pagination: ITablePagination<Data>) => 
 
   useEffect(() => {
     setLoading(true);
-    console.log('load')
     request(pagination)
       .then(response => {
         setData(response.data);
