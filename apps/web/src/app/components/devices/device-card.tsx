@@ -5,7 +5,7 @@ import Text from "antd/es/typography/Text";
 import CountPicker from "@/app/components/count-picker";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Title from "antd/es/typography/Title";
 import { basketActions } from "@/redux/features/basket.slice";
 import { useAppDispatch, usePermission } from "@/hooks";
