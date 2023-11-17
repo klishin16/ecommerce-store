@@ -16,7 +16,7 @@ const DeviceFilterContainer = styled((props: CardProps) => <Card {...props} />)`
 const {Title} = Typography
 
 const minPriceRange = 0;
-const maxPriceRange = 10000;
+const maxPriceRange = 100000;
 
 export interface IDevicesFiltersForm {
     minPrice: number;
