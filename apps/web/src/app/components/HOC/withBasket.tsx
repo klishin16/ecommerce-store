@@ -5,8 +5,9 @@ import { basketActions } from "@/redux/features/basket.slice";
 import { IPurchase } from "@ecommerce-store/common";
 
 
-const withBasket = <P extends object>(WrappedComponent: React.ComponentType<P>): React.ComponentType<P & { purchases: IPurchase[] }> => {
-  const ComponentWithBasket = (props: P) => {
+//@ts-ignore
+const withBasket = (WrappedComponent: React.ComponentType<{ purchases: IPurchase[] | null }>) => {
+  const ComponentWithBasket = () => {
     const dispatch = useAppDispatch();
     const {token, user, isAuthenticated} = useTypedSelector(state => state.auth);
     const {id, isLoading, purchases} = useTypedSelector(state => state.basket);
@@ -31,7 +32,7 @@ const withBasket = <P extends object>(WrappedComponent: React.ComponentType<P>):
       return <Loader/>
     }
 
-    return <WrappedComponent { ...props } purchases={ purchases }/>
+    return <WrappedComponent purchases={ purchases }/>
   };
 
   return ComponentWithBasket;

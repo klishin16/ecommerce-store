@@ -38,11 +38,9 @@ const PurchaseCard = styled.div`
   gap: 8px;
 `
 
-interface IBasketPageProps {
-  purchases: IPurchase[]
-}
 
-const BasketPage: React.FC<IBasketPageProps> = ({ purchases }) => {
+
+const BasketPage = ({ purchases }: { purchases: IPurchase[] }) => {
     const [total, setTotal] = useState<number>(0);
     useEffect(() => {
         setTotal(
@@ -93,4 +91,5 @@ const BasketPage: React.FC<IBasketPageProps> = ({ purchases }) => {
     )
 }
 
+//@ts-ignore
 export default withBasket(BasketPage);

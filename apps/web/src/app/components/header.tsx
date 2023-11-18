@@ -35,7 +35,7 @@ const HeaderLogoContainer = styled.div`
 `
 
 interface IAppHeaderProps {
-  purchases: IPurchase[]
+  purchases: IPurchase[] | null
 }
 
 const AppHeader: React.FC<IAppHeaderProps> = ({purchases}) => {

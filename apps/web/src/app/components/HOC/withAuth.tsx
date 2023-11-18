@@ -8,11 +8,8 @@ import { authActions } from "@/redux/features/auth.slice";
 import Loader from "@/app/components/loader";
 
 
-const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P & {
-    token: string;
-    user: IUser
-  }>, allow_roles?: EUserRoles[]) => {
-    const AuthenticatedComponent = (props: P) => {
+const withAuth = (WrappedComponent: React.ComponentType<{ token: string; user: IUser }>, allow_roles?: EUserRoles[]) => {
+    const AuthenticatedComponent = () => {
       const dispatch = useAppDispatch();
       const router = useRouter();
       const pathname = usePathname();
@@ -55,7 +52,7 @@ const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P & {
       )
 
       if (!!token && isAuthenticated && !!user) {
-        return <WrappedComponent { ...props } token={ token } user={ user }/>
+        return <WrappedComponent token={ token } user={ user }/>
       }
 
       return <Loader />
