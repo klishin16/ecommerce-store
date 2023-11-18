@@ -9,7 +9,8 @@ import Loader from "@/app/components/loader";
 
 
 const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P & {
-    token: string
+    token: string;
+    user: IUser
   }>, allow_roles?: EUserRoles[]) => {
     const AuthenticatedComponent = (props: P) => {
       const dispatch = useAppDispatch();
@@ -54,7 +55,7 @@ const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P & {
       )
 
       if (!!token && isAuthenticated && !!user) {
-        return <WrappedComponent { ...props } token={ token }/>
+        return <WrappedComponent { ...props } token={ token } user={ user }/>
       }
 
       return <Loader />

@@ -7,6 +7,7 @@ export interface IRegisterPayload {
 
 export interface IRegisterResponseData {
     access_token: string;
+    user: IUser;
 }
 
 export interface ILoginPayload {

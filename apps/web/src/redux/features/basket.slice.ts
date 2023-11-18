@@ -73,7 +73,7 @@ const basketSlice = createSlice({
       })
       .addCase(loadUserBasket.fulfilled, (state, action) => {
         state.id = action.payload.id ?? null
-        state.purchases = action.payload.purchases
+        state.purchases = action.payload.purchases ?? [];
         state.isLoading = false;
       })
       .addCase(loadUserBasket.rejected, (state, action) => {

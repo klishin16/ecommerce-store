@@ -25,8 +25,11 @@ export const useAuthSession = (): { token: string | null, user: IUser | null } =
                 if (localStorageToken) {
                     AuthService.profile(localStorageToken)
                         .then((profile) => {
-                            dispatch(authActions.setToken(localStorageToken))
-                            dispatch(authActions.setUser(profile))
+                            dispatch(authActions.setAll({
+                              token: localStorageToken,
+                              user: profile,
+                              isAuthenticated: true
+                            }))
                         })
                         .catch(() => {
                             console.log('Unauthorized')

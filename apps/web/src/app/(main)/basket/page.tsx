@@ -1,11 +1,12 @@
 'use client'
 import styled from "styled-components";
 import Title from "antd/es/typography/Title";
-import { useBasket } from "@/hooks/useBasket";
 import { Image } from "antd";
 import Text from "antd/es/typography/Text";
 import React, { useEffect, useState } from "react";
 import { IMAGE_STORAGE_URL } from "@/constants";
+import withBasket from "@/app/components/HOC/withBasket";
+import { IPurchase } from "@ecommerce-store/common";
 
 const BasketPageContainer = styled.div`
   width: 40vw;
@@ -37,8 +38,11 @@ const PurchaseCard = styled.div`
   gap: 8px;
 `
 
-const BasketPage = () => {
-    const { purchases } = useBasket();
+interface IBasketPageProps {
+  purchases: IPurchase[]
+}
+
+const BasketPage: React.FC<IBasketPageProps> = ({ purchases }) => {
     const [total, setTotal] = useState<number>(0);
     useEffect(() => {
         setTotal(
@@ -89,4 +93,4 @@ const BasketPage = () => {
     )
 }
 
-export default BasketPage;
+export default withBasket(BasketPage);
