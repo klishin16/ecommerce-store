@@ -52,7 +52,7 @@ const BasketPage = ({ purchases }: { purchases: IPurchase[] }) => {
         )
     }, [purchases]);
 
-    const purchasesCards = () => purchases.map((purchase) => (
+    const purchasesCards = () => purchases?.map((purchase) => (
         <PurchaseCard key={ purchase.id }>
             <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
                 <Image
