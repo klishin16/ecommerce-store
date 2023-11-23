@@ -55,7 +55,7 @@ const BasketPage = ({purchases}: { purchases: IPurchase[] | null }) => {
     <PurchaseCard key={ purchase.id }>
       <Row gutter={8} align={"middle"} style={{ width: '100%' }}>
         {/* Image */}
-        <Col span={5}>
+        <Col span={4}>
           <Image
             width={ '90px' }
             src={ IMAGE_STORAGE_URL + purchase.device.image_url + '/-/preview/500x500/' }
@@ -70,7 +70,7 @@ const BasketPage = ({purchases}: { purchases: IPurchase[] | null }) => {
         </Col>
 
         {/* Amount */}
-        <Col span={5}>
+        <Col span={4}>
           <Title style={ {margin: 0} } level={ 4 }>Amount: { purchase.amount }</Title>
         </Col>
 
