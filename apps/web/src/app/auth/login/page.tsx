@@ -9,7 +9,6 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from "next/link";
 import { APP_TITLE, ERoutes } from "@/constants";
 import { addNotification } from "@/redux/features/notifications.slice";
-import { errorHandler } from "@/functions/error-handler";
 import { ILoginPayload } from "@ecommerce-store/common";
 
 
@@ -55,11 +54,11 @@ const LoginPage = () => {
                 }));
                 router.push(searchParams.get('continue') ?? ERoutes.INDEX)
             })
-            .catch((e: unknown) => {
+            .catch((error) => {
                 dispatch(
                     addNotification({
                         title: 'Login error',
-                        message: errorHandler(e),
+                        message: error,
                         type: 'error'
                     })
                 );

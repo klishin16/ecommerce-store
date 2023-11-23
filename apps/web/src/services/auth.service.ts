@@ -7,6 +7,7 @@ import {
   IRegisterResponseData,
   IUser
 } from "@ecommerce-store/common";
+import { errorHandler } from "@/functions";
 
 
 const axiosInstance = axios.create({
@@ -14,7 +15,10 @@ const axiosInstance = axios.create({
 });
 axiosInstance.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8';
 axiosInstance.interceptors.response.use(
-  (response) => response.data
+  (response) => response.data,
+  error => {
+    return Promise.reject(errorHandler(error))
+  }
 )
 
 const register = async (payload: IRegisterPayload): Promise<IRegisterResponseData> => {

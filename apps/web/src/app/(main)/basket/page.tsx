@@ -78,7 +78,7 @@ const BasketPage = ({ purchases }: { purchases: IPurchase[] }) => {
 
     return (
         <BasketPageContainer>
-            <Title level={2}>Basket</Title>
+            <Title level={2}>Cart</Title>
 
             <PurchasesContainer style={{ marginBottom: 14 }}>
                 { purchasesCards() }

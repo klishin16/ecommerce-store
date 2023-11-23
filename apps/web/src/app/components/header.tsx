@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Badge, Button, Modal } from "antd";
 import styled from "styled-components";
-import { UserAddOutlined, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined, ShoppingCartOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import Title from "antd/es/typography/Title";
 import { useAppDispatch, useAuthSession, useTypedSelector } from "@/hooks";
 import { useRouter } from "next/navigation";
@@ -86,11 +86,17 @@ const AppHeader: React.FC<IAppHeaderProps> = ({purchases}) => {
       </Button>
 
       <Badge count={ purchases?.length ?? 0 }>
-        <Button type={ "link" } onClick={ basketButtonClickHandler } key="6">Basket</Button>
+        <Button type={ "link" }
+                icon={ <ShoppingCartOutlined /> }
+                onClick={ basketButtonClickHandler }
+                key="6">Cart</Button>
       </Badge>
       { [EUserRoles.ADMIN, EUserRoles.EDITOR].includes(user.role) &&
         <Button type={ "link" } onClick={ () => router.push(ERoutes.ADMIN) } key="6">Admin</Button> }
-      <Button type={ "link" } onClick={ () => logout() } key="7">Logout</Button>
+      <Button type={ "link" }
+              icon={ <LogoutOutlined /> }
+              onClick={ () => logout() }
+              key="7">Logout</Button>
 
     </>
     :

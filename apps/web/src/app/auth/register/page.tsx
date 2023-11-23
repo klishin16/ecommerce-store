@@ -47,10 +47,10 @@ const RegisterPage = () => {
                 }));
                 router.push(ERoutes.INDEX)
             })
-            .catch((e) => {
+            .catch(error => {
                 dispatch(addNotification({
                     title: 'Registration error',
-                    message: errorHandler(e),
+                    message: error,
                     type: 'error',
                 }));
             })

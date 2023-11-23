@@ -14,13 +14,15 @@ export const errorHandler = (error: unknown): string => {
             return 'Connection canceled...';
         }
         if (response) {
+          /** Сообщение в ошибке */
+          const message = Array.isArray(response.data.message) ? response.data.message[0] : response.data.message;
             //The request was made and the server responded with a status code that falls out of the range of 2xx the http status code mentioned above
             const statusCode = response?.status
             if (statusCode === 404) {
-                return 'The requested resource does not exist or has been deleted';
+                return message ?? 'The requested resource does not exist or has been deleted';
             } else if (statusCode === 401) {
                 // ошибка авторизации
-                return 'Please login to access this resource';
+                return message ?? 'Please login to access this resource';
             } else if (statusCode === 400 || statusCode === 422) {
                 // ошибка валидации или исполнения запроса на сервере
                 return Array.isArray(response.data.message) ? response.data.message[0] : response.data.message;
