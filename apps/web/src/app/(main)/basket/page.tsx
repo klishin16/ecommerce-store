@@ -9,7 +9,7 @@ import withBasket from "@/app/components/HOC/withBasket";
 import { IPurchase } from "@ecommerce-store/common";
 
 const BasketPageContainer = styled.div`
-  width: 40vw;
+  width: 50vw;
   height: 100%;
   margin: auto;
   padding-top: 90px;
@@ -65,7 +65,7 @@ const BasketPage = ({purchases}: { purchases: IPurchase[] | null }) => {
         </Col>
 
         {/* Name */}
-        <Col span={11}>
+        <Col span={12}>
           <Title style={{ margin: 0 }} level={ 3 }>{ purchase.device.name }</Title>
         </Col>
 
@@ -75,7 +75,7 @@ const BasketPage = ({purchases}: { purchases: IPurchase[] | null }) => {
         </Col>
 
         {/* Price */}
-        <Col span={3}>
+        <Col span={4}>
           { purchase.device.sale ?
             <div style={{ flex: '1 1 120px', display: "flex", gap: '4px'} }>
               <Title type='success' level={ 4 } style={ {margin: 0} }>
