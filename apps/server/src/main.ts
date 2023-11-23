@@ -20,10 +20,11 @@ async function bootstrap() {
         .addTag('git: @klishin16')
         .build()
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api/docs', app, document)  
+    SwaggerModule.setup('api/docs', app, document)
 
     app.enableCors({
-      allowedHeaders: "*",
+      methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE'],
+      allowedHeaders: ['Authorization', 'content-type', 'x-requested-with'],
       credentials: true,
   })
   app.useGlobalPipes(new ValidationPipe())

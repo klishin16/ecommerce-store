@@ -24,7 +24,6 @@ export const login = createAsyncThunk(
     try {
       return await AuthService.login(payload);
     } catch (error) {
-      console.log('here', error)
       return thunkAPI.rejectWithValue(error);
     }
   }
