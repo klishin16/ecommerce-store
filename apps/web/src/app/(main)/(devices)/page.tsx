@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react';
-import { Button, Card, Empty, Form } from "antd";
+import { Button, Empty, Form } from "antd";
 import { useAppDispatch, usePermission, useTypedSelector } from "@/hooks";
 import styled from "styled-components";
 import { devicesActions } from "@/redux/features/devices.slice";
@@ -10,6 +10,7 @@ import withSettings from "@/app/components/HOC/withSettings";
 import Title from "antd/es/typography/Title";
 import { AppColors } from "@/constants";
 import Loader from "@/app/components/loader";
+import { useInView } from "react-cool-inview";
 
 
 const DevicesPageContainer = styled("div")`
@@ -81,6 +82,26 @@ const DevicesPage = () => {
     form.submit()
   }
 
+  const { observe } = useInView({
+    threshold: 0.25, // Default is 0
+    onChange: ({ inView, scrollDirection, entry, observe, unobserve }) => {
+      // Triggered whenever the target meets a threshold, e.g. [0.25, 0.5, ...]
+
+      unobserve(); // To stop observing the current target element
+      observe(); // To re-start observing the current target element
+    },
+    onEnter: ({ scrollDirection, entry, observe, unobserve }) => {
+      // Triggered when the target enters the viewport
+      console.log('enter scrollNoDiscounts')
+      // @ts-ignore
+      window.ym(95089246,'reachGoal','scrollNoDiscounts')
+    },
+    onLeave: ({ scrollDirection, entry, observe, unobserve }) => {
+      // Triggered when the target leaves the viewport
+    },
+    // More useful options...
+  });
+
   const devicesWithSale = devices.filter(device => !!device.sale);
   const devicesWithoutSale = devices.filter(device => !device.sale);
 
@@ -111,7 +132,7 @@ const DevicesPage = () => {
                 { devicesWithSale.map(device => <DeviceCard key={ device.id + '1' }
                                                             device={ device }></DeviceCard>) }
                 <DevicesSectionCard style={{ marginTop: 4, marginBottom: 4 }}>
-                  <Title level={ 3 } style={ {margin: 0} }>NO DISCOUNTS</Title>
+                  <Title level={ 3 } style={ {margin: 0} } ref={observe}>NO DISCOUNTS</Title>
                 </DevicesSectionCard>
                 { devicesWithoutSale.map(device => <DeviceCard key={ device.id + '2' }
                                                                device={ device }></DeviceCard>) }

@@ -43,13 +43,13 @@ const DeviceCard: React.FC<IDeviceCardProps> = ({ device }) => {
 
     const buyHandler = (device: IDevice) => {
         // @ts-ignore
-        window.ym(95089246,'reachGoal','buyButton')
+        window.ym(95089246,'reachGoal','buyButton', { params: { amount: amount } })
         dispatch(basketActions.addDevice({ device, amount }))
     }
 
     const buyNowHandler = (device: IDevice) => {
         // @ts-ignore
-        window.ym(95089246,'reachGoal','buyNowButton')
+        window.ym(95089246,'reachGoal','buyNowButton', { params: { amount: 1 } })
         dispatch(basketActions.addDevice({ device, amount })).then((v) => {
             router.push(ERoutes.BASKET)
         })

@@ -44,13 +44,13 @@ const DeviceDetailPage = ({ params }: { params: { device_id: number } }) => {
 
     const buyHandler = (device: IDevice) => {
         // @ts-ignore
-        window.ym(95089246,'reachGoal','detailBuyButton')
+        window.ym(95089246,'reachGoal','detailBuyButton', { params: { amount: 1 } })
         dispatch(basketActions.addDevice({ device, amount: 1 }))
     }
 
     const buyNowHandler = (device: IDevice) => {
         // @ts-ignore
-        window.ym(95089246,'reachGoal','detailBuyNowButton')
+        window.ym(95089246,'reachGoal','detailBuyNowButton', { params: { amount: 1 } })
         dispatch(basketActions.addDevice({ device, amount: 1 })).then((v) => {
             router.push(ERoutes.BASKET)
         })

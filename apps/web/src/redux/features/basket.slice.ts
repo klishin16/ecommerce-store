@@ -81,7 +81,10 @@ const basketSlice = createSlice({
       })
       // Успешное добавление товара -> добавляем в purchases[]
       .addCase(addDevice.fulfilled, (state, action) => {
+        console.log('addDevice.fulfilled')
         state.purchases?.push(action.payload)
+        // @ts-ignore
+        window.ym(95089246,'reachGoal','basketUpdate', { params: { basketTotalPrice: state.purchases?.reduce((acc, purchase) => { return acc + purchase.amount * purchase.device.price }, 0) } })
       })
   }
 })
