@@ -102,6 +102,26 @@ const DevicesPage = () => {
     // More useful options...
   });
 
+  const { observe: observe2 } = useInView({
+    threshold: 0.25, // Default is 0
+    onChange: ({ inView, scrollDirection, entry, observe, unobserve }) => {
+      // Triggered whenever the target meets a threshold, e.g. [0.25, 0.5, ...]
+
+      unobserve(); // To stop observing the current target element
+      observe(); // To re-start observing the current target element
+    },
+    onEnter: ({ scrollDirection, entry, observe, unobserve }) => {
+      // Triggered when the target enters the viewport
+      console.log('enter scrollEnd')
+      // @ts-ignore
+      window.ym(95089246,'reachGoal','scrollEnd')
+    },
+    onLeave: ({ scrollDirection, entry, observe, unobserve }) => {
+      // Triggered when the target leaves the viewport
+    },
+    // More useful options...
+  });
+
   const devicesWithSale = devices.filter(device => !!device.sale);
   const devicesWithoutSale = devices.filter(device => !device.sale);
 
@@ -114,43 +134,46 @@ const DevicesPage = () => {
   }
 
   return (
-    <DevicesPageContainer className='devices-page-container'>
-      { isPermissionActive('filters') &&
-        <DevicesFiltersContainer>
-          <DevicesFilter form={ form }/>
-        </DevicesFiltersContainer>
-      }
+    <>
+      <DevicesPageContainer className='devices-page-container'>
+        { isPermissionActive('filters') &&
+          <DevicesFiltersContainer>
+            <DevicesFilter form={ form }/>
+          </DevicesFiltersContainer>
+        }
 
-      { devices.length ?
-        <DevicesScrollableContainer>
-          { isPermissionActive('sales-section') && devicesWithSale.length && devicesWithoutSale.length ?
-            <>
-              <DeviceCardsContainer className='devices-cards-container--sales-sections'>
-                <DevicesSectionCard style={{ marginBottom: 4 }}>
-                  <Title level={ 3 } style={ {margin: 0, color: AppColors.GREEN} }>DISCOUNTS</Title>
-                </DevicesSectionCard>
-                { devicesWithSale.map(device => <DeviceCard key={ device.id + '1' }
-                                                            device={ device }></DeviceCard>) }
-                <DevicesSectionCard style={{ marginTop: 4, marginBottom: 4 }}>
-                  <Title level={ 3 } style={ {margin: 0} } ref={observe}>NO DISCOUNTS</Title>
-                </DevicesSectionCard>
-                { devicesWithoutSale.map(device => <DeviceCard key={ device.id + '2' }
-                                                               device={ device }></DeviceCard>) }
-              </DeviceCardsContainer>
-            </> :
-            <>
-              <DeviceCardsContainer className='devices-cards-container'>
-                { devices.map(device => <DeviceCard key={ device.id + '3' } device={ device }></DeviceCard>) }
-              </DeviceCardsContainer>
-            </>
-          }
-        </DevicesScrollableContainer> :
-        <EmptyContainer>
-          <Empty description='No products'>
-            <Button type='primary' onClick={ resetFilters }>Reset filters</Button>
-          </Empty>
-        </EmptyContainer> }
-    </DevicesPageContainer>
+        { devices.length ?
+          <DevicesScrollableContainer>
+            { isPermissionActive('sales-section') && devicesWithSale.length && devicesWithoutSale.length ?
+              <>
+                <DeviceCardsContainer className='devices-cards-container--sales-sections'>
+                  <DevicesSectionCard style={{ marginBottom: 4 }}>
+                    <Title level={ 3 } style={ {margin: 0, color: AppColors.GREEN} }>DISCOUNTS</Title>
+                  </DevicesSectionCard>
+                  { devicesWithSale.map(device => <DeviceCard key={ device.id + '1' }
+                                                              device={ device }></DeviceCard>) }
+                  <DevicesSectionCard style={{ marginTop: 4, marginBottom: 4 }}>
+                    <Title level={ 3 } style={ {margin: 0} } ref={observe}>NO DISCOUNTS</Title>
+                  </DevicesSectionCard>
+                  { devicesWithoutSale.map(device => <DeviceCard key={ device.id + '2' }
+                                                                 device={ device }></DeviceCard>) }
+                  <div ref={observe2}></div>
+                </DeviceCardsContainer>
+              </> :
+              <>
+                <DeviceCardsContainer className='devices-cards-container'>
+                  { devices.map(device => <DeviceCard key={ device.id + '3' } device={ device }></DeviceCard>) }
+                </DeviceCardsContainer>
+              </>
+            }
+          </DevicesScrollableContainer> :
+          <EmptyContainer>
+            <Empty description='No products'>
+              <Button type='primary' onClick={ resetFilters }>Reset filters</Button>
+            </Empty>
+          </EmptyContainer> }
+      </DevicesPageContainer>
+    </>
   );
 };
 
